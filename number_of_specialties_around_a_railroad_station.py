@@ -18,8 +18,6 @@ plt.ylabel('Latitude')
 plt.title('Selected Stations in North Korea')
 plt.show()
 
-from shapely.geometry import Point
-
 # 데이터 불러오기
 special_production_locations_path = "C:/Users/sms79/Desktop/공모전/통일 빅데이터 공모전/map_bridge_station_railroad/북한 특산물 위치.csv"
 special_production_locations_df = pd.read_csv(special_production_locations_path, encoding='EUC-KR')
@@ -54,12 +52,12 @@ def find_nearest_station(product_lat, product_lon, stations_df):
     return nearest_station
 
 
-# Find the nearest station for each product
-special_production_locations_df['Nearest Station'] = special_production_locations_df.apply(lambda row: find_nearest_station(row['X좌표'], row['Y좌표'], selected_stations_df), axis=1)
+# 각 특산물 위치에서 가장 가까운 역 찾기
+special_production_locations_df['가장 가까운 역'] = special_production_locations_df.apply(lambda row: find_nearest_station(row['X좌표'], row['Y좌표'], selected_stations_df), axis=1)
 special_production_locations_df.head()
 
-#  각각의 철도역이 참조된 횟수를 계산한다.
-station_reference_counts = special_production_locations_df['Nearest Station'].value_counts()
+#  각각의 철도역이 참조된 횟수를 계산.
+station_reference_counts = special_production_locations_df['가장 가까운 역'].value_counts()
 station_reference_df = station_reference_counts.reset_index()
 station_reference_df.columns = ['철도역', '참조 횟수']
 station_reference_df = station_reference_df.sort_values(by="참조 횟수", ascending=False)
@@ -68,7 +66,8 @@ station_reference_df
 # 각 철도역의 참조 횟수 데이터를 원래의 철도역 데이터프레임에 병합
 stations_with_references = pd.merge(selected_stations_df, station_reference_df, left_on='지명', right_on='철도역', how='left').fillna(0)
 stations_with_references = stations_with_references.drop(columns=['철도역'])
-
+print(stations_with_references)
+"""
 import folium
 # 북한 위치로 지도 생성
 map_project = folium.Map(location=[40.0, 127.0], zoom_start=7)
@@ -96,8 +95,9 @@ for idx, row in stations_with_references.iterrows():
             html=f'<div style="color: white; font-size: {font_size}px; font-weight: bold; text-align: center; line-height: {font_size}px;">{int(row["참조 횟수"])}</div>'),
     ).add_to(map_project)
 
-# Save the middle-aligned text map as an HTML file
+# HTML파일로 저장
 map_project_path = "C:/Users/sms79/Desktop/공모전/통일 빅데이터 공모전/map_bridge_station_railroad/map_project.html"
 map_project.save(map_project_path)
 
 map_project_path
+"""
