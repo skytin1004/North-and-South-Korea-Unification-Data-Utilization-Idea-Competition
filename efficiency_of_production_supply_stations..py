@@ -31,11 +31,11 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # 각 특산물 위치에서 20km 이내에 철도역이 있는지 확인
 local_products['특산물 위치 20km 이내의 기차역'] = False
-for idx, product in local_products.iterrows():
-    for i, station in railway_stations_df.iterrows():
+for i, product in local_products.iterrows():
+    for j, station in railway_stations_df.iterrows():
         distance = haversine(product['Y좌표'], product['X좌표'], station['Y좌표'], station['X좌표'])
         if distance <= 20:
-            local_products.at[idx, '특산물 위치 20km 이내의 기차역'] = True
+            local_products.at[i, '특산물 위치 20km 이내의 기차역'] = True
             break
 
 # 철도역이 20km이내에 있는 특산물의 비율 계산
