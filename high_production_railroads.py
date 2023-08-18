@@ -23,7 +23,7 @@ def haversine(lat1, lon1, lat2, lon2):
 station_product_counts_150km = []
 for i, station_row in railway_stations_df.iterrows():
     count = 0
-    for i, product_row in local_products.iterrows():
+    for j, product_row in local_products.iterrows():
         distance = haversine(station_row['X좌표'], station_row['Y좌표'], 
                              product_row['X좌표'], product_row['Y좌표'])
         if distance <= 150:
