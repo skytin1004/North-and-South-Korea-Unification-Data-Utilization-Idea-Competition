@@ -42,7 +42,7 @@ for i, row in sorted_stations.iterrows():
             break
 
 selected_stations_df = pd.DataFrame(selected_stations)
-selected_stations_df[['지명', '특산물 개수']]
+print(selected_stations_df[['지명', '특산물 개수']])
 
 # CSV파일로 저장
 file_path = "C:/Users/sms79/Desktop/공모전/통일 빅데이터 공모전/map_bridge_station_railroad/selected_stations.csv"
